@@ -1,0 +1,70 @@
+<div class="page">
+  <mat-card class="card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Daily US IPO Monitor</mat-card-title>
+      <mat-card-subtitle>Configure recipient + Dubai send time, or run now</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" class="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Default recipient email</mat-label>
+          <input matInput formControlName="toEmail" placeholder="you@domain.com" />
+          <mat-error *ngIf="form.get('toEmail')?.hasError('required')">Email is required</mat-error>
+          <mat-error *ngIf="form.get('toEmail')?.hasError('email')">Enter a valid email</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Daily send time (Dubai)</mat-label>
+          <input matInput formControlName="sendTime" placeholder="09:00" />
+          <mat-hint>Format: HH:MM (24h)</mat-hint>
+          <mat-error *ngIf="form.get('sendTime')?.invalid">Enter time like 09:00</mat-error>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="sendNow">
+          Send immediately after saving config
+        </mat-checkbox>
+
+        <mat-divider></mat-divider>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Send now (optional override email)</mat-label>
+          <input matInput formControlName="overrideEmail" placeholder="other@domain.com (optional)" />
+          <mat-hint>Leave blank to send to default recipient</mat-hint>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-stroked-button type="button" (click)="refreshConfig()" [disabled]="loading">
+            Refresh
+          </button>
+
+          <span class="spacer"></span>
+
+          <button mat-flat-button color="primary" type="button" (click)="saveConfig()" [disabled]="loading || form.invalid">
+            Save Config
+          </button>
+
+          <button mat-flat-button color="accent" type="button" (click)="triggerNow()" [disabled]="loading">
+            Send Now
+          </button>
+        </div>
+      </form>
+
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+      <div class="status" *ngIf="lastMessage">
+        {{ lastMessage }}
+      </div>
+
+      <mat-card class="result" appearance="outlined" *ngIf="lastResult">
+        <mat-card-title>Last run result</mat-card-title>
+        <mat-card-content>
+          <div><strong>OK:</strong> {{ lastResult.ok }}</div>
+          <div *ngIf="lastResult.usDate"><strong>US Date:</strong> {{ lastResult.usDate }}</div>
+          <div *ngIf="lastResult.ok"><strong>Matches:</strong> {{ formatMatches(lastResult.matches) }}</div>
+          <div *ngIf="!lastResult.ok"><strong>Error:</strong> {{ lastResult.error }}</div>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

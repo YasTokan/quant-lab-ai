@@ -1,0 +1,39 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #0b1020; // subtle dark background
+}
+
+.card {
+  width: min(720px, 92vw);
+  border-radius: 16px;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+.status {
+  margin-top: 12px;
+  opacity: 0.9;
+}
+
+.result {
+  margin-top: 16px;
+  border-radius: 14px;
+}
